@@ -5,6 +5,10 @@
     <meta name="description" content="Anime Template" />
     <meta name="keywords" content="Anime, unica, creative, html" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Country-Guess | Flag</title>
 
@@ -183,7 +187,7 @@
               <a id="points" href="#">0 Point(s)</a>
               <a id="attempts" href="#">0 Attempt(s)</a>
             </div>
-            <div class="anime__details__episodes">0.5 Version</div>
+            <div class="anime__details__episodes">0.6 Version</div>
           </div>
         </div>
       </div>
@@ -274,6 +278,10 @@
       function verify(number) {
         me = $("#option" + number);
         myAttr = $(me).attr("data-correct");
+        myID = $(me).attr("id");
+        correctOption = $(".btns[data-correct='true']").attr("id");
+        console.log("myID=" + myID);
+        console.log("correctOption=" + correctOption);
 
         if (myAttr === "true") {
           points += 1;
@@ -283,23 +291,17 @@
 
         attempts += 1;
 
-        $("#option1")
-          .removeClass("normalButton successButton")
-          .addClass("errorButton");
-        $("#option2")
-          .removeClass("normalButton successButton")
-          .addClass("errorButton");
-        $("#option3")
-          .removeClass("normalButton successButton")
-          .addClass("errorButton");
-        $("#option4")
-          .removeClass("normalButton successButton")
-          .addClass("errorButton");
-        $("#option5")
-          .removeClass("normalButton successButton")
-          .addClass("errorButton");
+        //check if current button is correct or wrong
+        if (myID != correctOption) {
+          //update incorrect option in selected
+          $("#" + myID)
+            .removeClass("normalButton successButton")
+            .addClass("errorButton");
+        }
 
-        $(".btns[data-correct='true']").addClass("successButton");
+        $("#" + correctOption)
+          .removeClass("normalButton errorButton")
+          .addClass("successButton");
 
         $("#option1").attr("onclick", "");
         $("#option2").attr("onclick", "");
@@ -307,15 +309,25 @@
         $("#option4").attr("onclick", "");
         $("#option5").attr("onclick", "");
 
-        setTimeout(reset, 1000);
+        setTimeout(reset, 1500);
       }
       function getRandomKey(exclude1, exclude2, exclude3, exclude4, exclude5) {
         new_codes = codes_arr;
-        delete new_codes[exclude1];
-        delete new_codes[exclude2];
-        delete new_codes[exclude3];
-        delete new_codes[exclude4];
-        delete new_codes[exclude5];
+        if (exclude1) {
+          delete new_codes[exclude1];
+        }
+        if (exclude2) {
+          delete new_codes[exclude2];
+        }
+        if (exclude3) {
+          delete new_codes[exclude3];
+        }
+        if (exclude4) {
+          delete new_codes[exclude4];
+        }
+        if (exclude5) {
+          delete new_codes[exclude5];
+        }
 
         keys = Object.keys(new_codes);
         var key = keys[Math.floor(Math.random() * keys.length)];
@@ -337,7 +349,7 @@
         var randomValue2, randomValue3, randomValue4, randomValue5;
         codes_arr = data;
         keys = Object.keys(codes_arr);
-        if (keys.length <= 10) {
+        if (attempts >= 50) {
           endGame();
           return;
         }
@@ -350,16 +362,21 @@
 
         console.log();
 
-        randomKey2 = getRandomKey();
+        randomKey2 = getRandomKey(randomKey);
         randomValue2 = getValue(randomKey2);
 
-        randomKey3 = getRandomKey();
+        randomKey3 = getRandomKey(randomKey, randomKey3);
         randomValue3 = getValue(randomKey3);
 
-        randomKey4 = getRandomKey();
+        randomKey4 = getRandomKey(randomKey, randomKey3, randomKey4);
         randomValue4 = getValue(randomKey4);
 
-        randomKey5 = getRandomKey();
+        randomKey5 = getRandomKey(
+          randomKey,
+          randomKey3,
+          randomKey4,
+          randomKey5
+        );
         randomValue5 = getValue(randomKey5);
 
         randomNumber = getRandomNumber(1, 5);
