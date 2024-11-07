@@ -27,6 +27,26 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css" />
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css" />
     <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <style>
+      .errorButton {
+        background: rgba(255, 0, 0, 0.2) !important;
+        color: white !important;
+      }
+      .successButton {
+        background: rgba(0, 255, 0, 0.2) !important;
+        color: white !important;
+      }
+      .normalButton {
+        background: rgba(255, 255, 255, 0.2) !important;
+        color: white !important;
+      }
+      .hide {
+        display: none !important;
+      }
+      .show {
+        display: block;
+      }
+    </style>
   </head>
 
   <body>
@@ -113,11 +133,13 @@
               <div class="section-title">
                 <h5>Guess the country</h5>
               </div>
+              <a id="gameEnd" class="hide normalButton" href="#">Game End</a>
               <a
                 class="btns"
                 id="option1"
                 onclick="verify(1)"
                 data-correct="false"
+                class="normalButton"
                 href="#"
                 >Option 1</a
               >
@@ -126,6 +148,7 @@
                 id="option2"
                 onclick="verify(2)"
                 data-correct="false"
+                class="normalButton"
                 href="#"
                 >Option 2</a
               >
@@ -134,6 +157,7 @@
                 id="option3"
                 onclick="verify(3)"
                 data-correct="false"
+                class="normalButton"
                 href="#"
                 >Option 3</a
               ><a
@@ -141,6 +165,7 @@
                 id="option4"
                 onclick="verify(4)"
                 data-correct="false"
+                class="normalButton"
                 href="#"
                 >Option 4</a
               ><a
@@ -148,6 +173,7 @@
                 id="option5"
                 onclick="verify(5)"
                 data-correct="false"
+                class="normalButton"
                 href="#"
                 >Option 5</a
               >
@@ -157,7 +183,7 @@
               <a id="points" href="#">0 Point(s)</a>
               <a id="attempts" href="#">0 Attempt(s)</a>
             </div>
-            <div class="anime__details__episodes">0.3 Version</div>
+            <div class="anime__details__episodes">0.5 Version</div>
           </div>
         </div>
       </div>
@@ -248,7 +274,6 @@
       function verify(number) {
         me = $("#option" + number);
         myAttr = $(me).attr("data-correct");
-        console.log(myAttr);
 
         if (myAttr === "true") {
           points += 1;
@@ -258,16 +283,23 @@
 
         attempts += 1;
 
-        $("#option1").attr("style", "background:rgba(255, 0, 0, 0.2)");
-        $("#option2").attr("style", "background:rgba(255, 0, 0, 0.2)");
-        $("#option3").attr("style", "background:rgba(255, 0, 0, 0.2)");
-        $("#option4").attr("style", "background:rgba(255, 0, 0, 0.2)");
-        $("#option5").attr("style", "background:rgba(255, 0, 0, 0.2)");
+        $("#option1")
+          .removeClass("normalButton successButton")
+          .addClass("errorButton");
+        $("#option2")
+          .removeClass("normalButton successButton")
+          .addClass("errorButton");
+        $("#option3")
+          .removeClass("normalButton successButton")
+          .addClass("errorButton");
+        $("#option4")
+          .removeClass("normalButton successButton")
+          .addClass("errorButton");
+        $("#option5")
+          .removeClass("normalButton successButton")
+          .addClass("errorButton");
 
-        $(".btns[data-correct='true']").attr(
-          "style",
-          "background:rgba(0, 255, 0, 0.2)"
-        );
+        $(".btns[data-correct='true']").addClass("successButton");
 
         $("#option1").attr("onclick", "");
         $("#option2").attr("onclick", "");
@@ -292,17 +324,31 @@
       function getValue(key) {
         return codes_arr[key];
       }
+      function endGame() {
+        $("#option1").remove();
+        $("#option2").remove();
+        $("#option3").remove();
+        $("#option4").remove();
+        $("#option5").remove();
+        $("#endGame").removeClass("hide").addClass("show");
+      }
       function reset() {
         var randomKey2, randomKey3, randomKey4, randomKey5;
         var randomValue2, randomValue3, randomValue4, randomValue5;
         codes_arr = data;
         keys = Object.keys(codes_arr);
+        if (keys.length <= 10) {
+          endGame();
+          return;
+        }
         randomKey = keys[Math.floor(Math.random() * keys.length)];
         var randomValue = codes_arr[randomKey];
 
         //remove correct option from array
         delete data[randomKey];
         delete codes_arr[randomKey];
+
+        console.log();
 
         randomKey2 = getRandomKey();
         randomValue2 = getValue(randomKey2);
@@ -327,11 +373,11 @@
         $("#option4").attr("onclick", "verify(4)");
         $("#option5").attr("onclick", "verify(5)");
 
-        $("#option1").attr("style", "background:rgba(255, 255, 255, 0.2)");
-        $("#option2").attr("style", "background:rgba(255, 255, 255, 0.2)");
-        $("#option3").attr("style", "background:rgba(255, 255, 255, 0.2)");
-        $("#option4").attr("style", "background:rgba(255, 255, 255, 0.2)");
-        $("#option5").attr("style", "background:rgba(255, 255, 255, 0.2)");
+        $("#option1").addClass("normalButton");
+        $("#option2").addClass("normalButton");
+        $("#option3").addClass("normalButton");
+        $("#option4").addClass("normalButton");
+        $("#option5").addClass("normalButton");
 
         if (randomNumber === 1) {
           $("#option1").text(randomValue).attr("data-correct", "true");
