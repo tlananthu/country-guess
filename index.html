@@ -157,7 +157,7 @@
               <a id="points" href="#">0 Point(s)</a>
               <a id="attempts" href="#">0 Attempt(s)</a>
             </div>
-            <div class="anime__details__episodes">0.2 Version</div>
+            <div class="anime__details__episodes">0.3 Version</div>
           </div>
         </div>
       </div>
@@ -321,9 +321,6 @@
         $("#points").text(points + " Points");
         $("#attempts").text(attempts + " Attempts");
 
-        $(".btns").blur();
-        $("#country_flag").click();
-
         $("#option1").attr("onclick", "verify(1)");
         $("#option2").attr("onclick", "verify(2)");
         $("#option3").attr("onclick", "verify(3)");
@@ -386,7 +383,8 @@
             randomValue +
             '">'
         );
-        //console.log(codes_arr);
+        $(".btns").blur();
+        $("#country_flag").click();
       }
       $(document).ready(function () {
         reset();
