@@ -153,7 +153,9 @@
               >
             </div>
             <div class="anime__details__episodes">
-              <a id="refresh" onclick="reset()" href="#">Refresh</a>
+              <!--<a id="refresh" onclick="reset()" href="#">Refresh</a>-->
+              <a id="points" href="#">0 Point(s)</a>
+              <a id="attempts" href="#">0 Attempt(s)</a>
             </div>
           </div>
         </div>
@@ -227,13 +229,33 @@
     <script>
       var codes_url = "https://flagcdn.com/en/codes.json";
       var codes_arr = [];
+      var data;
+      var randomKey;
+      var attempts = 0;
+      var points = 0;
+
+      $.ajax({
+        url: codes_url,
+      }).done(function (response) {
+        data = response;
+        reset();
+      });
+
       function getRandomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
       function verify(number) {
-        //console.log(number);
         me = $("#option" + number);
-        //console.log($(me).attr("data-correct"));
+        myAttr = $(me).attr("data-correct");
+        console.log(myAttr);
+
+        if (myAttr === "true") {
+          points += 1;
+        } else {
+          points -= 0.5;
+        }
+
+        attempts += 1;
 
         $("#option1").attr("style", "background:rgba(255, 0, 0, 0.2)");
         $("#option2").attr("style", "background:rgba(255, 0, 0, 0.2)");
@@ -251,97 +273,123 @@
         $("#option3").attr("onclick", "");
         $("#option4").attr("onclick", "");
         $("#option5").attr("onclick", "");
+
+        setTimeout(reset, 1000);
+      }
+      function getRandomKey() {
+        keys = Object.keys(codes_arr);
+        var key = keys[Math.floor(Math.random() * keys.length)];
+        return key;
+      }
+      function getValue(key) {
+        return codes_arr[key];
       }
       function reset() {
-        $.ajax({
-          url: codes_url,
-        }).done(function (data) {
-          codes_arr = data;
-          keys = Object.keys(codes_arr);
-          var randomKey = keys[Math.floor(Math.random() * keys.length)];
-          var randomValue = codes_arr[randomKey];
+        var randomKey2, randomKey3, randomKey4, randomKey5;
+        var randomValue2, randomValue3, randomValue4, randomValue5;
+        codes_arr = data;
+        keys = Object.keys(codes_arr);
+        randomKey = keys[Math.floor(Math.random() * keys.length)];
+        var randomValue = codes_arr[randomKey];
 
-          var randomKey2 = keys[Math.floor(Math.random() * keys.length)];
-          var randomValue2 = codes_arr[randomKey2];
+        //remove correct option from array
+        delete data[randomKey];
+        delete codes_arr[randomKey];
 
-          var randomKey3 = keys[Math.floor(Math.random() * keys.length)];
-          var randomValue3 = codes_arr[randomKey3];
+        randomKey2 = getRandomKey();
+        randomValue2 = getValue(randomKey2);
+        //var randomKey2 = keys[Math.floor(Math.random() * keys.length)];
+        //var randomValue2 = codes_arr[randomKey2];
 
-          var randomKey4 = keys[Math.floor(Math.random() * keys.length)];
-          var randomValue4 = codes_arr[randomKey4];
+        randomKey3 = getRandomKey();
+        randomValue3 = getValue(randomKey3);
+        //getRandomKeyVal(randomKey3, randomValue3);
+        //var randomKey3 = keys[Math.floor(Math.random() * keys.length)];
+        //var randomValue3 = codes_arr[randomKey3];
 
-          var randomKey5 = keys[Math.floor(Math.random() * keys.length)];
-          var randomValue5 = codes_arr[randomKey5];
+        randomKey4 = getRandomKey();
+        randomValue4 = getValue(randomKey4);
+        //getRandomKeyVal(randomKey4, randomValue4);
+        //var randomKey4 = keys[Math.floor(Math.random() * keys.length)];
+        //var randomValue4 = codes_arr[randomKey4];
 
-          console.log(randomKey);
-          console.log(randomValue);
+        randomKey5 = getRandomKey();
+        randomValue5 = getValue(randomKey5);
+        //getRandomKeyVal(randomKey5, randomValue5);
+        //var randomKey5 = keys[Math.floor(Math.random() * keys.length)];
+        //var randomValue5 = codes_arr[randomKey5];
 
-          randomNumber = getRandomNumber(1, 5);
+        //console.log(randomKey);
+        //console.log(randomValue);
 
-          $("#option1").attr("onclick", "verify(1)");
-          $("#option2").attr("onclick", "verify(2)");
-          $("#option3").attr("onclick", "verify(3)");
-          $("#option4").attr("onclick", "verify(4)");
-          $("#option5").attr("onclick", "verify(5)");
+        randomNumber = getRandomNumber(1, 5);
 
-          $("#option1").attr("style", "background:rgba(255, 255, 255, 0.2)");
-          $("#option2").attr("style", "background:rgba(255, 255, 255, 0.2)");
-          $("#option3").attr("style", "background:rgba(255, 255, 255, 0.2)");
-          $("#option4").attr("style", "background:rgba(255, 255, 255, 0.2)");
-          $("#option5").attr("style", "background:rgba(255, 255, 255, 0.2)");
+        $("#points").text(points + " Points");
+        $("#attempts").text(attempts + " Attempts");
 
-          if (randomNumber === 1) {
-            $("#option1").text(randomValue).attr("data-correct", "true");
-            $("#option2").text(randomValue2).attr("data-correct", "false");
-            $("#option3").text(randomValue3).attr("data-correct", "false");
-            $("#option4").text(randomValue4).attr("data-correct", "false");
-            $("#option5").text(randomValue5).attr("data-correct", "false");
-          }
-          if (randomNumber === 2) {
-            $("#option1").text(randomValue2).attr("data-correct", "false");
-            $("#option2").text(randomValue).attr("data-correct", "true");
-            $("#option3").text(randomValue3).attr("data-correct", "false");
-            $("#option4").text(randomValue4).attr("data-correct", "false");
-            $("#option5").text(randomValue5).attr("data-correct", "false");
-          }
-          if (randomNumber === 3) {
-            $("#option1").text(randomValue2).attr("data-correct", "false");
-            $("#option2").text(randomValue3).attr("data-correct", "false");
-            $("#option3").text(randomValue).attr("data-correct", "true");
-            $("#option4").text(randomValue4).attr("data-correct", "false");
-            $("#option5").text(randomValue5).attr("data-correct", "false");
-          }
-          if (randomNumber === 4) {
-            $("#option1").text(randomValue2).attr("data-correct", "false");
-            $("#option2").text(randomValue3).attr("data-correct", "false");
-            $("#option3").text(randomValue4).attr("data-correct", "false");
-            $("#option4").text(randomValue).attr("data-correct", "true");
-            $("#option5").text(randomValue5).attr("data-correct", "false");
-          }
-          if (randomNumber === 5) {
-            $("#option1").text(randomValue2).attr("data-correct", "false");
-            $("#option2").text(randomValue3).attr("data-correct", "false");
-            $("#option3").text(randomValue4).attr("data-correct", "false");
-            $("#option4").text(randomValue5).attr("data-correct", "false");
-            $("#option5").text(randomValue).attr("data-correct", "true");
-          }
+        $("#option1").attr("onclick", "verify(1)");
+        $("#option2").attr("onclick", "verify(2)");
+        $("#option3").attr("onclick", "verify(3)");
+        $("#option4").attr("onclick", "verify(4)");
+        $("#option5").attr("onclick", "verify(5)");
 
-          $("#country_flag").empty();
-          $("#country_flag").append(
-            '<img src="https://flagcdn.com/120x90/' +
-              randomKey +
-              '.png"\
+        $("#option1").attr("style", "background:rgba(255, 255, 255, 0.2)");
+        $("#option2").attr("style", "background:rgba(255, 255, 255, 0.2)");
+        $("#option3").attr("style", "background:rgba(255, 255, 255, 0.2)");
+        $("#option4").attr("style", "background:rgba(255, 255, 255, 0.2)");
+        $("#option5").attr("style", "background:rgba(255, 255, 255, 0.2)");
+
+        if (randomNumber === 1) {
+          $("#option1").text(randomValue).attr("data-correct", "true");
+          $("#option2").text(randomValue2).attr("data-correct", "false");
+          $("#option3").text(randomValue3).attr("data-correct", "false");
+          $("#option4").text(randomValue4).attr("data-correct", "false");
+          $("#option5").text(randomValue5).attr("data-correct", "false");
+        }
+        if (randomNumber === 2) {
+          $("#option1").text(randomValue2).attr("data-correct", "false");
+          $("#option2").text(randomValue).attr("data-correct", "true");
+          $("#option3").text(randomValue3).attr("data-correct", "false");
+          $("#option4").text(randomValue4).attr("data-correct", "false");
+          $("#option5").text(randomValue5).attr("data-correct", "false");
+        }
+        if (randomNumber === 3) {
+          $("#option1").text(randomValue2).attr("data-correct", "false");
+          $("#option2").text(randomValue3).attr("data-correct", "false");
+          $("#option3").text(randomValue).attr("data-correct", "true");
+          $("#option4").text(randomValue4).attr("data-correct", "false");
+          $("#option5").text(randomValue5).attr("data-correct", "false");
+        }
+        if (randomNumber === 4) {
+          $("#option1").text(randomValue2).attr("data-correct", "false");
+          $("#option2").text(randomValue3).attr("data-correct", "false");
+          $("#option3").text(randomValue4).attr("data-correct", "false");
+          $("#option4").text(randomValue).attr("data-correct", "true");
+          $("#option5").text(randomValue5).attr("data-correct", "false");
+        }
+        if (randomNumber === 5) {
+          $("#option1").text(randomValue2).attr("data-correct", "false");
+          $("#option2").text(randomValue3).attr("data-correct", "false");
+          $("#option3").text(randomValue4).attr("data-correct", "false");
+          $("#option4").text(randomValue5).attr("data-correct", "false");
+          $("#option5").text(randomValue).attr("data-correct", "true");
+        }
+
+        $("#country_flag").empty();
+        $("#country_flag").append(
+          '<img src="https://flagcdn.com/120x90/' +
+            randomKey +
+            '.png"\
           srcset="https://flagcdn.com/240x180/' +
-              randomKey +
-              '.png 2x"\
+            randomKey +
+            '.png 2x"\
           width="120"\
           height="90"\
           alt="' +
-              randomValue +
-              '">'
-          );
-          console.log(codes_arr);
-        });
+            randomValue +
+            '">'
+        );
+        //console.log(codes_arr);
       }
       $(document).ready(function () {
         reset();
