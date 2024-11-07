@@ -187,7 +187,7 @@
               <a id="points" href="#">0 Point(s)</a>
               <a id="attempts" href="#">0 Attempt(s)</a>
             </div>
-            <div class="anime__details__episodes">0.6 Version</div>
+            <div class="anime__details__episodes">0.7 Version</div>
           </div>
         </div>
       </div>
@@ -349,7 +349,7 @@
         var randomValue2, randomValue3, randomValue4, randomValue5;
         codes_arr = data;
         keys = Object.keys(codes_arr);
-        if (attempts >= 50) {
+        if (attempts >= 51) {
           endGame();
           return;
         }
@@ -434,17 +434,11 @@
 
         $("#country_flag").empty();
         $("#country_flag").append(
-          '<img src="https://flagcdn.com/120x90/' +
+          '<img src="https://flagcdn.com/256x192/' +
             randomKey +
             '.png"\
-          srcset="https://flagcdn.com/240x180/' +
-            randomKey +
-            '.png 2x"\
-          width="120"\
-          height="90"\
-          alt="' +
-            randomValue +
-            '">'
+          width="256"\
+          height="192">'
         );
         $(".btns").blur();
         $("#country_flag").click();
