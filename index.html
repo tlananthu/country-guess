@@ -268,11 +268,11 @@
           "background:rgba(0, 255, 0, 0.2)"
         );
 
-        $("#option1").attr("onclick", "").blur();
-        $("#option2").attr("onclick", "").blur();
-        $("#option3").attr("onclick", "").blur();
-        $("#option4").attr("onclick", "").blur();
-        $("#option5").attr("onclick", "").blur();
+        $("#option1").attr("onclick", "");
+        $("#option2").attr("onclick", "");
+        $("#option3").attr("onclick", "");
+        $("#option4").attr("onclick", "");
+        $("#option5").attr("onclick", "");
 
         setTimeout(reset, 1000);
       }
@@ -320,11 +320,11 @@
         $("#points").text(points + " Points");
         $("#attempts").text(attempts + " Attempts");
 
-        $("#option1").attr("onclick", "verify(1)");
-        $("#option2").attr("onclick", "verify(2)");
-        $("#option3").attr("onclick", "verify(3)");
-        $("#option4").attr("onclick", "verify(4)");
-        $("#option5").attr("onclick", "verify(5)");
+        $("#option1").attr("onclick", "verify(1)").blur();
+        $("#option2").attr("onclick", "verify(2)").blur();
+        $("#option3").attr("onclick", "verify(3)").blur();
+        $("#option4").attr("onclick", "verify(4)").blur();
+        $("#option5").attr("onclick", "verify(5)").blur();
 
         $("#option1").attr("style", "background:rgba(255, 255, 255, 0.2)");
         $("#option2").attr("style", "background:rgba(255, 255, 255, 0.2)");
